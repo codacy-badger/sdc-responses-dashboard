@@ -34,9 +34,11 @@ def reporting_details(collection_instrument_type, survey_id, collex_id):
 
     try:
         report = get_reporting_details(parsed_survey_id, parsed_collex_id)
-    except HTTPError:
-        logger.debug('Invalid collection exercise or survey id')
-        abort(404)
+    except HTTPError as e:
+        if e.response.status_code == 400:
+            logger.debug('Invalid collection exercise or survey id')
+            abort(400)
+        abort(500)
 
     if collection_instrument_type == 'seft':
         report['report']['uploads'] = report['report'].pop('completed')

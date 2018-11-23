@@ -85,3 +85,31 @@ class TestReporting(AppContextTestCase):
                                         '/survey/57586798-74e3-49fd-93da-a782ec5f5129'
                                         '/collection-exercise/00000000-0000-0000-0000-0000000000000')
         self.assertEqual(response.status_code, 404)
+
+    @responses.activate
+    def test_reporting_http_error_request_400(self):
+        with self.app.app_context():
+            responses.add(responses.GET, self.app.config['REPORTING_URL'] + '/reporting-api/v1/response-dashboard'
+                                                                            '/survey'
+                                                                            '/57586798-74e3-49fd-93da-a782ec5f5129'
+                                                                            '/collection-exercise'
+                                                                            '/14fb3e68-4dca-46db-bf49-04b84e07e999',
+                          status=400)
+        response = self.test_client.get('/dashboard/reporting/SEFT'
+                                        '/survey/57586798-74e3-49fd-93da-a782ec5f5129'
+                                        '/collection-exercise/14fb3e68-4dca-46db-bf49-04b84e07e999')
+        self.assertEqual(response.status_code, 400)
+
+    @responses.activate
+    def test_reporting_http_error_request_500(self):
+        with self.app.app_context():
+            responses.add(responses.GET, self.app.config['REPORTING_URL'] + '/reporting-api/v1/response-dashboard'
+                                                                            '/survey'
+                                                                            '/57586798-74e3-49fd-93da-a782ec5f5129'
+                                                                            '/collection-exercise'
+                                                                            '/14fb3e68-4dca-46db-bf49-04b84e07e999',
+                          status=500)
+        response = self.test_client.get('/dashboard/reporting/SEFT'
+                                        '/survey/57586798-74e3-49fd-93da-a782ec5f5129'
+                                        '/collection-exercise/14fb3e68-4dca-46db-bf49-04b84e07e999')
+        self.assertEqual(response.status_code, 500)
