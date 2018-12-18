@@ -1,4 +1,5 @@
 start:
+	yarn compile
 	pipenv run python run.py
 
 compile:

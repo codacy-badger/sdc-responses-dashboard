@@ -66,7 +66,7 @@ function getReport(response) {
     return report;
 }
 
-function displayCollectionExerciseData(response) {
+function displayCollectionExerciseData(response, collexID) {
 
     const timeUpdated = moment.unix(response.metadata.timeUpdated).calendar(); // eslint-disable-line
     let report = getReport(response);
@@ -77,7 +77,7 @@ function displayCollectionExerciseData(response) {
         if (report.hasOwnProperty(figure)) {
 
             let layoutClass = Object.keys(report).length % 2 && figure === "sampleSize" ? "col-lg-12 col-xs-12" : "col-lg-6 col-sm-6 col-xs-12";
-
+            let change = getRelativeChangeForCollex(collexID, figure, report[figure].value)
             $("#counters").append($("<div>", {
                 "class": layoutClass
             }).append($("<div>", {
@@ -91,17 +91,20 @@ function displayCollectionExerciseData(response) {
                 "class": "icon"
             }).append($("<i>", {
                 "class": report[figure].class
-            }))])));
-
+            })), $("<a>", {
+                "class": "small-box-footer"
+            }).append([$("<i>", {"class": change.class}), $("<span>", {"class": "relative-change-figure"}).text(change.text)])])));
+            
             // Adds a minimal bounce animation to each counter
             $(`#${report[figure].id}-counter`).effect("bounce", "slow");
 
             // Adds a tooltip to each counter
-            $(`#${report[figure].id}-box`).tooltip({
+            $(`#${report[figure].id}-box .inner`).tooltip({
                 "title": report[figure].tooltip.title,
                 "placement": report[figure].tooltip.placement,
                 "html": true
             });
+
         }
     }
 
@@ -139,7 +142,9 @@ function callAPI() {
         $("#loading").hide();
         $("#time-updated-label").show();
 
-        displayCollectionExerciseData(result);
+        createCookie(result);
+        displayCollectionExerciseData(result, collexID);
+
     }).fail((result) => {
         $("#loading").hide();
         $(".content-header").hide();
@@ -150,6 +155,57 @@ function callAPI() {
             setTimeout(callAPI, reportingRefreshCycleInSeconds * 1000);
         }
     });
+}
+
+function createCookie(figures) {
+    let cookie = document.cookie;
+    let collex_id = figures.metadata.collectionExerciseId;
+    let figure_data = figures.report;
+	if (!cookie.includes('collexStatistics')) {
+	    let data = {};
+	    data[collex_id] = figure_data;
+		let values = JSON.stringify(data)
+        setCookie('collexStatistics', values, 1)
+    }
+    else {
+        let existingCookie = getCookie('collexStatistics')
+        if (existingCookie != "undefined") {
+            if (existingCookie.hasOwnProperty(collex_id) == false) {
+                existingCookie[collex_id] = figure_data
+                setCookie('collexStatistics', JSON.stringify(existingCookie), 1)
+            }
+        }
+    }
+}
+
+function getRelativeChangeForCollex(collexID, attribute, currentValue) {
+    let cookie = getCookie();
+    if (cookie && collexID in cookie) {
+        let difference = currentValue - cookie[collexID][attribute]
+        let relativeChange = {
+            text: Math.abs(difference),
+            class: ((difference < 0) ? 'fa fa-arrow-down' : 'fa fa-arrow-up')
+        }
+        return relativeChange;
+    }
+
+}
+
+function setCookie(name, value, expiryInDays) {
+	let d = new Date();
+	d.setTime(d.getTime() + (expiryInDays*24*60*60*1000));
+	let expires = `expires=${d.toUTCString()}`;
+	document.cookie = `${name}=${value};${expires};path=/`;
+  }
+
+function getCookie(name='collexStatistics') {
+    let cookie = document.cookie.split(`${name}=`)[1].split(';')[0].trim()
+    if (cookie === undefined) {
+        return;
+    }
+    else {
+        return JSON.parse(cookie);
+    }
 }
 
 $(document).ready(() => {

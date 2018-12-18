@@ -14,11 +14,13 @@
 .bg-ons-light-blue {
 	background-color: #3398c5;
 	color: #fff;
+	border: 2px solid #003650;
 }
 
 .bg-ons-blue {
 	background-color: #00364F;
 	color: #fff;
+	border: 2px solid #003650;
 }
 
 .bt-ons-blue {
@@ -212,4 +214,9 @@ div.dataTables_wrapper div.dataTables_paginate {
 
 .tooltip-inner {
     max-width: 275px;
+}
+
+.relative-change-figure {
+	font-weight: 700;
+	padding-left: 5px;
 }
