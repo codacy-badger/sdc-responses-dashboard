@@ -108,8 +108,16 @@ div.dataTables_wrapper div.dataTables_paginate {
     font-weight: bold;
 }
 
-#choose-survey {
+.top-bar-button strong {
 	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#reset-figure-history {
+    float: right;
+    width: 170px;
+    border-right: 0px;
+    border-left: 1px solid #eee;
+    display: none;
 }
 
 .progress {

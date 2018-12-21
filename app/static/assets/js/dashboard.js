@@ -1,6 +1,6 @@
 $(document).ready(() => {
-    $("#modal-survey").modal({
-        backdrop: "static",
-        keyboard: false
-    });
+  $('#modal-survey').modal({
+    backdrop: 'static',
+    keyboard: false,
+  });
 });
