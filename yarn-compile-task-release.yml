@@ -19,5 +19,6 @@ run:
     - |
       cd sdc-responses-dashboard-source
       yarn compile
+      ls -a
       cp -R ../sdc-responses-dashboard-source/. ../compiled-sdc-responses-dashboard-source
-      cp ../sdc-responses-dashboard-source/commit_sha ../compiled-sdc-responses-dashboard-source/.static_assets_version
+      cp ./commit_sha ../compiled-sdc-responses-dashboard-source/.static_assets_version
