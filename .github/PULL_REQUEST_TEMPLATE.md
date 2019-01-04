@@ -15,7 +15,3 @@
 <!--- Add any links to issues (trello, github issues) -->
 <!--- Links to any documentation -->
 <!--- Links to any related PRs -->
-
-### Checklist
-
-* [ ] STATIC_ASSETS_VERSION updated.

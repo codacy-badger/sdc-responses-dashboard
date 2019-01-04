@@ -20,4 +20,4 @@ run:
       cd sdc-responses-dashboard-source
       yarn compile
       cp -R ../sdc-responses-dashboard-source/. ../compiled-sdc-responses-dashboard-source
-      cp ../sdc-responses-dashboard-source/.git/ref ../compiled-sdc-responses-dashboard-source/.static_assets_version
+      cp ../sdc-responses-dashboard-source/commit_sha ../compiled-sdc-responses-dashboard-source/.static_assets_version
