@@ -1,6 +1,10 @@
 import os
 import time
 
+from structlog import get_logger
+
+logger = get_logger()
+
 REQUIRED_ENVIRONMENT_VARIABLES = {
     'PORT',
     'HOST',
@@ -12,6 +16,17 @@ REQUIRED_ENVIRONMENT_VARIABLES = {
     'AUTH_PASSWORD',
     'STATIC_ASSETS_VERSION'
 }
+
+
+def read_file(file_name):
+    if file_name and os.path.isfile(file_name):
+        logger.debug('reading from file', filename=file_name)
+        with open(file_name, 'r') as file:
+            contents = file.read()
+            return contents
+    else:
+        logger.info('Did not load file because filename supplied was None or not a file', filename=file_name)
+        return None
 
 
 class Config:
@@ -26,7 +41,8 @@ class Config:
     AUTH_PASSWORD = os.getenv('AUTH_PASSWORD')
     LOGGING_LEVEL = os.getenv('LOGGING_LEVEL', 'INFO')
     LOGGING_JSON_INDENT = os.getenv('LOGGING_JSON_INDENT')
-    STATIC_ASSETS_VERSION = os.getenv('STATIC_ASSETS_VERSION', '1.1.1')  # Defaulted until releases
+    STATIC_ASSETS_VERSION = read_file(os.path.join(os.path.dirname(__file__), '.static_assets_version'))
+
 
 
 class DevelopmentConfig(Config):
