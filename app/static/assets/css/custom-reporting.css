@@ -14,11 +14,13 @@
 .bg-ons-light-blue {
 	background-color: #3398c5;
 	color: #fff;
+	border: 2px solid #003650;
 }
 
 .bg-ons-blue {
 	background-color: #00364F;
 	color: #fff;
+	border: 2px solid #003650;
 }
 
 .bt-ons-blue {
@@ -106,7 +108,7 @@ div.dataTables_wrapper div.dataTables_paginate {
     font-weight: bold;
 }
 
-#choose-survey {
+.top-bar-button strong {
 	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 

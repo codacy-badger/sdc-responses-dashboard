@@ -10,6 +10,9 @@ __pycache__
 *.iml
 *.iws
 
+# vscode
+.vscode
+
 # Virtualenvs
 .env
 env

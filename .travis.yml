@@ -19,6 +19,7 @@ cache:
       - /home/travis/.local/share/
 script:
   - yarn compile
+  - make lint
   - make test
 branches:
   only:
